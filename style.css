@@ -81,6 +81,7 @@ body {
     margin-top: 8px;
     max-height: 400px;
     overflow-y: auto;
+    display: none;
 }
 
 .result-item {
