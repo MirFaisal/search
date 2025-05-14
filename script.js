@@ -12,6 +12,16 @@ const sampleData = [
     'Angular Framework'
 ];
 
+// Hide search results when clicking outside
+document.addEventListener('click', (e) => {
+    const searchContainer = document.querySelector('.search-container');
+    const searchResults = document.getElementById('searchResults');
+    
+    if (!searchContainer.contains(e.target)) {
+        searchResults.style.display = 'none';
+    }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('searchInput');
     const searchResults = document.getElementById('searchResults');
