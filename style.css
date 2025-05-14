@@ -67,15 +67,15 @@ body {
 
 .search-results {
     position: absolute;
-    top: 100%;
+    top: calc(100% + 4px);
     left: 0;
     right: 0;
     background: #212121;
     border: 1px solid #303030;
-    border-radius: 12px;
-    margin-top: 12px;
+    border-radius: 0 0 12px 12px;
     z-index: 1000;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    width: 100%;
 }
 
 .result-item {
