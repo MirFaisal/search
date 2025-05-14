@@ -14,13 +14,14 @@ body {
 .container {
     max-width: 600px;
     margin: 0 auto;
+    position: relative;
 }
 
 .search-container {
-    margin-bottom: 20px;
     position: relative;
     max-width: 640px;
     margin: 0 auto;
+    z-index: 1000;
 }
 
 .search-box {
@@ -68,15 +69,18 @@ body {
 
 .search-results {
     position: absolute;
-    top: calc(100% + 4px);
-    left: 0;
-    right: 0;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
     background: #212121;
     border: 1px solid #303030;
-    border-radius: 0 0 12px 12px;
+    border-radius: 8px;
     z-index: 1000;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     width: 100%;
+    margin-top: 8px;
+    max-height: 400px;
+    overflow-y: auto;
 }
 
 .result-item {

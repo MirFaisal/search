@@ -17,8 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchResults = document.getElementById('searchResults');
     let debounceTimer;
 
-    // Add input event listener
-    searchInput.addEventListener('input', (e) => {
+    // Add input event listener    searchInput.addEventListener('input', (e) => {
         // Clear the previous timer
         clearTimeout(debounceTimer);
 
@@ -28,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (searchTerm.length === 0) {
                 searchResults.innerHTML = '';
+                searchResults.style.display = 'none';
                 return;
             }
 
