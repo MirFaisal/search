@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchResults = document.getElementById('searchResults');
     let debounceTimer;
 
+    // Initially hide the search results
+    searchResults.style.display = 'none';
+
     // Add input event listener    searchInput.addEventListener('input', (e) => {
         // Clear the previous timer
         clearTimeout(debounceTimer);
