@@ -53,9 +53,14 @@ function performAction() {
 }
 
 function updateActionButton(show, item = null) {
-  actionButton.style.display = show ? "flex" : "none";
-  setTimeout(() => actionButton.classList.toggle("visible", show), 0);
+  actionButton.disabled = !show;
   selectedItem = item;
+  // Update button appearance based on state
+  if (show) {
+    actionButton.style.opacity = "1";
+  } else {
+    actionButton.style.opacity = "0.7";
+  }
 }
 
 // Function to update suggestions
