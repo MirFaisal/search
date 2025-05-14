@@ -49,14 +49,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displayResults(results, searchTerm) {
         if (results.length === 0) {
-            searchResults.innerHTML = `
-                <div class="no-results">
-                    No results found for "${searchTerm}"
-                </div>
-            `;
+            searchResults.style.display = 'none';
             return;
         }
 
+        searchResults.style.display = 'block';
         const resultsHtml = results.map(result => {
             // Highlight the matching text
             const highlightedText = highlightMatch(result, searchTerm);
