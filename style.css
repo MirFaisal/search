@@ -153,6 +153,53 @@ body {
   }
 }
 
+/* Action Button Styles */
+.action-button {
+  position: absolute;
+  right: 16px;
+  background: #3b82f6;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  color: white;
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transform: translateX(10px);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.action-button.visible {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.action-button:hover {
+  background: #2563eb;
+}
+
+.action-button:active {
+  transform: scale(0.98);
+}
+
+.action-button svg {
+  transition: transform 0.2s ease;
+}
+
+.action-button:hover svg {
+  transform: translateX(2px);
+}
+
+/* Adjust spinner position when button is visible */
+.action-button.visible + .spinner {
+  right: 120px;
+}
+
 /* Responsive Design */
 @media screen and (max-width: 640px) {
   .container {
@@ -205,6 +252,15 @@ body {
 
   #suggestions {
     max-height: 250px;
+  }
+
+  .action-button {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  .action-button.visible + .spinner {
+    right: 100px;
   }
 }
 

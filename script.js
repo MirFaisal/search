@@ -1,9 +1,11 @@
 const searchInput = document.getElementById("search");
 const suggestionsList = document.getElementById("suggestions");
 const searchWrapper = searchInput.closest(".search-wrapper");
+const actionButton = document.getElementById("action-button");
 
 let selectedIndex = -1;
 let suggestions = [];
+let selectedItem = null;
 
 // Debounce function to limit API calls
 function debounce(func, wait) {
@@ -42,10 +44,25 @@ function highlightSuggestion(index) {
   }
 }
 
+function performAction() {
+  if (selectedItem) {
+    // Example action - you can customize this
+    console.log("Performing action with:", selectedItem);
+    alert(`Action performed for: ${selectedItem.title || selectedItem}`);
+  }
+}
+
+function updateActionButton(show, item = null) {
+  actionButton.style.display = show ? "flex" : "none";
+  setTimeout(() => actionButton.classList.toggle("visible", show), 0);
+  selectedItem = item;
+}
+
 // Function to update suggestions
 async function updateSuggestions(query) {
   suggestionsList.innerHTML = "";
   selectedIndex = -1;
+  updateActionButton(false);
 
   if (!query) {
     suggestionsList.style.display = "none";
@@ -62,6 +79,7 @@ async function updateSuggestions(query) {
       searchInput.value = item.title || item;
       suggestionsList.style.display = "none";
       selectedIndex = -1;
+      updateActionButton(true, item);
     });
     li.addEventListener("mouseover", () => {
       highlightSuggestion(index);
@@ -97,6 +115,7 @@ searchInput.addEventListener("keydown", (e) => {
         const selected = suggestions[selectedIndex];
         searchInput.value = selected.title || selected;
         suggestionsList.style.display = "none";
+        updateActionButton(true, selected);
         selectedIndex = -1;
       }
       break;
@@ -104,9 +123,13 @@ searchInput.addEventListener("keydown", (e) => {
     case "Escape":
       suggestionsList.style.display = "none";
       selectedIndex = -1;
+      updateActionButton(false);
       break;
   }
 });
+
+// Action button click handler
+actionButton.addEventListener("click", performAction);
 
 // Debounced version of updateSuggestions (300ms delay)
 const debouncedUpdate = debounce(updateSuggestions, 300);
@@ -118,7 +141,7 @@ searchInput.addEventListener("input", () => {
 });
 
 document.addEventListener("click", (e) => {
-  if (e.target !== searchInput) {
+  if (e.target !== searchInput && !e.target.closest(".action-button")) {
     suggestionsList.style.display = "none";
     selectedIndex = -1;
   }
