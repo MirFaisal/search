@@ -2,6 +2,9 @@ const searchInput = document.getElementById("search");
 const suggestionsList = document.getElementById("suggestions");
 const searchWrapper = searchInput.closest(".search-wrapper");
 
+let selectedIndex = -1;
+let suggestions = [];
+
 // Debounce function to limit API calls
 function debounce(func, wait) {
   let timeout;
@@ -28,26 +31,82 @@ async function fetchSuggestionsFromAPI(query) {
   }
 }
 
+function highlightSuggestion(index) {
+  const items = suggestionsList.querySelectorAll("li");
+  items.forEach((item) => item.classList.remove("selected"));
+
+  selectedIndex = index;
+  if (index >= 0 && index < items.length) {
+    items[index].classList.add("selected");
+    items[index].scrollIntoView({ block: "nearest" });
+  }
+}
+
 // Function to update suggestions
 async function updateSuggestions(query) {
   suggestionsList.innerHTML = "";
+  selectedIndex = -1;
+
   if (!query) {
     suggestionsList.style.display = "none";
     return;
   }
 
   const filtered = await fetchSuggestionsFromAPI(query);
-  filtered.forEach((item) => {
+  suggestions = filtered; // Store for keyboard navigation
+
+  filtered.forEach((item, index) => {
     const li = document.createElement("li");
     li.textContent = item.title || item;
     li.addEventListener("click", () => {
       searchInput.value = item.title || item;
       suggestionsList.style.display = "none";
+      selectedIndex = -1;
+    });
+    li.addEventListener("mouseover", () => {
+      highlightSuggestion(index);
     });
     suggestionsList.appendChild(li);
   });
+
   suggestionsList.style.display = filtered.length ? "block" : "none";
 }
+
+// Keyboard navigation
+searchInput.addEventListener("keydown", (e) => {
+  const items = suggestionsList.querySelectorAll("li");
+
+  switch (e.key) {
+    case "ArrowDown":
+      e.preventDefault();
+      if (suggestionsList.style.display === "block") {
+        highlightSuggestion(selectedIndex < items.length - 1 ? selectedIndex + 1 : 0);
+      }
+      break;
+
+    case "ArrowUp":
+      e.preventDefault();
+      if (suggestionsList.style.display === "block") {
+        highlightSuggestion(selectedIndex > 0 ? selectedIndex - 1 : items.length - 1);
+      }
+      break;
+
+    case "Enter":
+      if (selectedIndex >= 0 && selectedIndex < items.length) {
+        e.preventDefault();
+        const selected = suggestions[selectedIndex];
+        searchInput.value = selected.title || selected;
+        suggestionsList.style.display = "none";
+        selectedIndex = -1;
+      }
+      break;
+
+    case "Escape":
+      suggestionsList.style.display = "none";
+      selectedIndex = -1;
+      break;
+  }
+});
 
 // Debounced version of updateSuggestions (300ms delay)
 const debouncedUpdate = debounce(updateSuggestions, 300);
@@ -61,5 +120,6 @@ searchInput.addEventListener("input", () => {
 document.addEventListener("click", (e) => {
   if (e.target !== searchInput) {
     suggestionsList.style.display = "none";
+    selectedIndex = -1;
   }
 });

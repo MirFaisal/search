@@ -9,8 +9,9 @@ body {
     min-height: 100vh;
     background: linear-gradient(135deg, #f6f8fd 0%, #f1f4f9 100%);
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
+    padding-top: 40px;
 }
 
 .container {
@@ -18,19 +19,26 @@ body {
     max-width: 600px;
     padding: 20px;
     position: fixed;
-    top: 20px;
+    top: 0;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
 }
 
 .search-container {
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
     overflow: hidden;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.search-container:focus-within {
+    transform: translateY(2px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
 }
 
 .search-wrapper {
@@ -38,12 +46,17 @@ body {
     display: flex;
     align-items: center;
     padding: 16px;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .search-icon {
     color: #94a3b8;
     margin-right: 12px;
+    transition: color 0.2s ease;
+}
+
+.search-wrapper:focus-within .search-icon {
+    color: #3b82f6;
 }
 
 #search {
@@ -54,10 +67,12 @@ body {
     color: #1e293b;
     background: transparent;
     font-family: inherit;
+    font-weight: 500;
 }
 
 #search::placeholder {
     color: #94a3b8;
+    font-weight: 400;
 }
 
 .spinner {
@@ -89,6 +104,7 @@ body {
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: #94a3b8 #f1f5f9;
+    background: rgba(255, 255, 255, 0.95);
 }
 
 #suggestions::-webkit-scrollbar {
@@ -110,11 +126,18 @@ body {
     cursor: pointer;
     transition: all 0.2s ease;
     animation: fadeIn 0.2s ease;
+    border-left: 3px solid transparent;
 }
 
-#suggestions li:hover {
+#suggestions li:hover,
+#suggestions li.selected {
     background: #f8fafc;
     color: #1e293b;
+    border-left-color: #3b82f6;
+}
+
+#suggestions li.selected {
+    background: #f0f7ff;
 }
 
 @keyframes fadeIn {
